@@ -69,6 +69,7 @@ def sign_in_view(request):
 
 @csrf_exempt
 def login_view(request):
+    print("login_view called")
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -83,14 +84,15 @@ def login_view(request):
             try:
                 # Send OTP via email
                 print(user.email)
-                send_mail(
-                    'Your OTP Code',
-                    f'Your OTP code is {otp}',
-                    'vi.trevi.11@gmail.com',
-                    [user.email],
-                    fail_silently=False,
-                )
-                return JsonResponse({'message': 'OTP sent to your email'}, status=200)
+                # send_mail(
+                #    'Your OTP Code',
+                #    f'Your OTP code is {otp}',
+                #    'vi.trevi.11@gmail.com',
+                #    [user.email],
+                #    fail_silently=False,
+                #)
+                print(otp)
+                return JsonResponse({'message': 'Your OTP code is {otp}'}, status=200)
             except BadHeaderError:
                 return JsonResponse({'success': False, 'message': 'Invalid header found.'}, status=400)
             except SMTPException as e:
