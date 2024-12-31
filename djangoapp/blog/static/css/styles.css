@@ -1,0 +1,272 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #222;
+    color: #fff;
+}
+
+#gameCanvas {
+    border: 2px solid #fff;
+    background-color: #000;
+}
+
+#score {
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border: 1px solid #ccc;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.gameContainer {
+    position: relative;
+    z-index: 500;
+}
+
+.container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 0; /* Ensure no extra margin */
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    padding: 10px; /* Adjust padding to remove extra space */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: auto;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin: 0; /* Ensure no extra margin */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.logout-button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #ff1a1a;
+}
+
+.play-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+}
+
+.play-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 20px 40px;
+    font-size: 24px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.play-button:hover {
+    background-color: #0056b3;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.edit-profile-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-profile-button:hover {
+    background-color: #45a049;
+}
+
+/* Ensure the tournament form container has enough margin to avoid overlapping with the user stripe */
+#tournamentContainer {
+    margin-left: 60px; /* Adjust this value as needed */
+    max-width: 400px; /* Ensure the form doesn't exceed a certain width */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Adjust the form fields to fit within the container */
+#tournamentForm .form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#tournamentForm input[type="text"], #tournamentForm input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+#tournamentForm button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+}
+
+#tournamentForm button:hover {
+    background-color: #218838;
+}
+
+/* Ensure the four player nickname container has enough margin to avoid overlapping with the user stripe */
+#fourPlayerNicknameContainer {
+    margin-left: 60px; /* Adjust this value as needed */
+    max-width: 400px; /* Ensure the form doesn't exceed a certain width */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Adjust the form fields to fit within the container */
+#fourPlayerNicknameContainer .form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#fourPlayerNicknameContainer input[type="text"], #fourPlayerNicknameContainer input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+#fourPlayerNicknameContainer button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+}
+
+#fourPlayerNicknameContainer button:hover {
+    background-color: #218838;
+}

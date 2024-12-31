@@ -1,0 +1,333 @@
+{% load static %}
+{% load i18n %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Pongon-line" %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <title>Home</title>
+    <script type="text/javascript">
+        function openLoginPopup() {
+            window.location.href = "{% url 'login42' %}";
+        }
+    </script>
+    
+</head>
+<body>
+    <form action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}">
+        <select name="language">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% for lang in LANGUAGES %}
+                <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                    {{ lang.1 }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">{% trans "Change language" %}</button>
+    </form>    
+    <header>
+        <div class="profile-container" id="profileContainer" style="display: none;">
+            <img id="profileAvatar" src="{% static 'default_avatar.png' %}" alt="User Avatar" class="profile-avatar">
+            <div class="profile-info">
+                <p><strong>{% trans "Username:" %}</strong> <span id="profileUsername"></span></p>
+                <p><strong>{% trans "Email:" %}</strong> <span id="profileEmail"></span></p>
+                <p><strong>{% trans "Nickname:" %}</strong> <span id="profileNickname"></span></p>
+                <button id="editProfileButton" class="edit-profile-button" onclick="showUpdateProfile()">{% trans "Edit Profile" %}</button>
+                <button id="friendListButton" class="friend-list-button" onclick="showFriendList()">{% trans "Friend List" %}</button>
+                <button id="statusButton" class="status-button" onclick="showStatus()">{% trans "Status" %}</button>
+                <button id="matchHistoryButton" class="match-history-button" onclick="showMatchHistory()">{% trans "Match History" %}</button>
+                <button id="statisticsButton" class="statistics-button" onclick="displayLast10Matches()">{% trans "Statistics" %}</button>
+            </div>
+        </div>
+        <button id="logoutButton" class="logout-button" style="display: none;" onclick="logout()">{% trans "Logout" %}</button>
+    </header>
+
+    {% if user.is_authenticated %}
+        <p>{% blocktrans with username=user.username %}Welcome, {{ username }}!{% endblocktrans %}</p>
+        <p><a href="{% url 'logout42' %}">{% trans "Logout" %}</a></p>
+    {% else %}
+        <p>{% trans "You are not logged in." %}</p>
+        <p><button onclick="openLoginPopup()">{% trans "Login with 42" %}</button></p>
+    {% endif %}
+
+    <!-- Main Menu Container -->
+    <div class="container menu-container" id="menuContainer">
+        <h1>{% trans "Pongon-line" %}</h1>
+        <button id="loginButton" onclick="showLogin()">{% trans "Login" %}</button>
+        <button id="signInButton" onclick="showSignIn()">{% trans "Sign In" %}</button>
+        <button id="playAsGuestButton" onclick="playAsGuest()">{% trans "Play as Guest" %}</button>
+    </div>
+
+    <!-- Game Mode Container -->
+    <div class="container game-mode-container" id="gameModeContainer" style="display: none;">
+        <button id="vsGameButton" onclick="selectMode('vsPlayer')">{% trans "VS Game" %}</button>
+        <button id="tournamentButton" onclick="selectMode('tournament')">{% trans "Tournament" %}</button>
+        <!-- Novo botão para 4 jogadores -->
+        <button id="fourPlayerButton" onclick="selectMode('fourPlayer')">{% trans "4 Player Game" %}</button>
+        <button onclick="showSettings()">{% trans "Settings" %}</button> <!-- Button to show settings -->
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+
+    <!-- Login Form Container -->
+    <div class="container" id="loginContainer" style="display: none;">
+        <h2>{% trans "Login" %}</h2>
+        <form id="loginForm">
+            {% csrf_token %}
+            <div class="form-row">
+                <input type="text" id="loginUsername" name="username" placeholder="{% trans 'Username' %}" required>
+                <input type="password" id="loginPassword" name="password" placeholder="{% trans 'Password' %}" required>
+            </div>
+            <button type="submit">{% trans "Login" %}</button>
+        </form>
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+
+    <!-- OTP Form Container -->
+    <div class="container" id="otpContainer" style="display: none;">
+        <h2>{% trans "Verify OTP" %}</h2>
+        <form id="otpForm">
+            {% csrf_token %}
+            <div class="form-row">
+                <input type="text" id="otp" name="otp" placeholder="{% trans 'OTP' %}" required>
+            </div>
+            <button type="submit">{% trans "Verify OTP" %}</button>
+        </form>
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+
+    <!-- Sign-In Form Container -->
+    <div class="container" id="signInContainer" style="display: none;">
+        <h2>{% trans "Sign In" %}</h2>
+        <form id="signInForm">
+            {% csrf_token %}
+            <div class="form-row">
+                <input type="text" id="signInUsername" name="username" placeholder="{% trans 'Username' %}" required>
+                <input type="password" id="signInPassword" name="password" placeholder="{% trans 'Password' %}" required>
+                <input type="email" id="signInEmail" name="email" placeholder="{% trans 'Email' %}" required>
+                <input type="text" id="signInNickname" name="nickname" placeholder="{% trans 'Nickname' %}" required>
+                <input type="file" id="signInAvatar" name="avatar" placeholder="{% trans 'Avatar' %}">
+            </div>
+            <button type="submit">{% trans "Sign In" %}</button>
+        </form>
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+
+    <!-- Profile Update Form Container -->
+    <div class="container" id="updateProfileContainer" style="display: none;">
+        <h2>{% trans "Update Profile" %}</h2>
+        <form id="updateProfileForm">
+            {% csrf_token %}
+            <div class="form-row">
+                <input type="email" id="updateEmail" name="email" placeholder="{% trans 'Email' %}">
+                <input type="text" id="updateNickname" name="nickname" placeholder="{% trans 'Nickname' %}">
+                <input type="file" id="updateAvatar" name="avatar" placeholder="{% trans 'Avatar' %}">
+            </div>
+            <button type="submit">{% trans "Update Profile" %}</button>
+        </form>
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+
+    <!-- Friend List Container -->
+    <div class="container" id="friendListContainer" style="display: none;">
+        <h2>{% trans "Friend List" %}</h2>
+        <table id="friendListTable">
+            <thead>
+                <tr>
+                    <th>{% trans "Username" %}</th>
+                    <th>{% trans "Nickname" %}</th>
+                    <th>{% trans "Action" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Friend list will be populated here -->
+            </tbody>
+        </table>
+        <button onclick="showAddFriendForm()">{% trans "Add Friend" %}</button>
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+
+    <!-- Add Friend Form Container -->
+    <div class="container" id="addFriendContainer" style="display: none;">
+        <h2>{% trans "Add Friend" %}</h2>
+        <form id="addFriendForm">
+            {% csrf_token %}
+            <div class="form-row">
+                <input type="text" id="friendUsername" name="username" placeholder="{% trans 'Username' %}" required>
+            </div>
+            <button type="submit">{% trans "Add Friend" %}</button>
+        </form>
+        <button onclick="showFriendList()">{% trans "Return to Friend List" %}</button>
+    </div>
+
+    <!-- Game Container -->
+    <div class="container gameContainer" id="gameContainer" style="display: none;">
+        <h1>{% trans "Pongon-line" %}</h1>
+        <div id="scoreDisplay"></div>
+        <canvas id="gameCanvas" width="600" height="400"></canvas>
+        <div class="button-container">
+            <button onclick="resetGame()">{% trans "Reset Game" %}</button>
+            <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        </div>
+    </div>
+
+    <!-- Nickname Container -->
+    <div class="container" id="nicknameContainer" style="display: none;">
+        <h2>{% trans "Enter Player Nicknames" %}s</h2>
+        <input type="text" id="player1Nickname" placeholder="{% trans 'Player 1 Nickname' %}">
+        <input type="hidden" id="player1Username" value=""> <!-- Hidden input for Player 1 Username -->
+        <input type="text" id="player2Nickname" placeholder="Player 2 Nickname">
+        <button onclick="startVsPlayerGame()">Start Game</button>
+        <button onclick="returnToMenu()">Return to Menu</button>
+    </div>
+
+    <!-- Tournament Button Container -->
+    <div class="container tButton-container" style="display: none;">
+        <button onclick="nextMatch()">{% trans "Next Match" %}</button>
+        <button onclick="endTournament()">{% trans "End Tournament" %}</button>
+    </div>
+
+    <!-- Tournament Container -->
+    <div class="container" id="tournamentContainer" style="display: none;">
+        <h2>{% trans "Enter Tournament Player Nicknames" %}</h2>
+        <input type="text" id="player1" placeholder="{% trans 'Player 1 Nickname' %}">
+        <input type="text" id="player2" placeholder="{% trans 'Player 2 Nickname' %}">
+        <input type="text" id="player3" placeholder="{% trans 'Player 3 Nickname' %}">
+        <input type="text" id="player4" placeholder="{% trans 'Player 4 Nickname' %}">
+        <input type="text" id="player5" placeholder="{% trans 'Player 5 Nickname' %}">
+        <input type="text" id="player6" placeholder="{% trans 'Player 6 Nickname' %}">
+        <input type="text" id="player7" placeholder="{% trans 'Player 7 Nickname' %}">
+        <input type="text" id="player8" placeholder="{% trans 'Player 8 Nickname' %}">
+        <button onclick="startTournament()">{% trans "Start Tournament" %}</button>
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+
+    <!-- Tournament Bracket Container -->
+    <div class="container" id="tournamentBracket" style="display: none;">
+        <h2>{% trans "Tournament Bracket" %}</h2>
+        <div id="quarterfinals">
+            <h3>{% trans "Quarterfinals" %}</h3>
+            <!-- Quarterfinals pairings will be displayed here -->
+        </div>
+    </div>
+
+<!-- Match History Container -->
+<div class="container" id="matchHistoryContainer" style="display: none;">
+    <h2>{% trans "Match History" %}</h2>
+    <table id="matchHistoryTable">
+        <thead>
+            <tr>
+                <th>{% trans "Player 1" %}</th>
+                <th>{% trans "Player 2" %}</th>
+                <th>{% trans "Winner" %}</th>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Details" %}</th>
+                <th>{% trans "Statistics" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Match history will be populated here -->
+        </tbody>
+    </table>
+    <div id="paginationControls" class="pagination-controls">
+        <button id="prevPageButton" onclick="prevPage()">{% trans "Previous" %}</button>
+        <span id="pageInfo"></span>
+        <button id="nextPageButton" onclick="nextPage()">{% trans "Next" %}</button>
+    </div>
+    <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+</div>
+
+<!-- Match Statistics Container -->
+<div class="container" id="matchStatisticsContainer" style="display: none;">
+    <h2>{% trans "Match Statistics" %}</h2>
+    <div id="matchStatisticsContent">
+        <!-- Match statistics will be displayed here -->
+        <canvas id="gameImageCanvas" width="400" height="300" style="border:1px solid #ffffff; margin-top:20px;"></canvas>
+    </div>
+    <button onclick="returnToHistory()">{% trans "Return to Match History" %}</button>
+</div>
+
+    <!-- Status Container -->
+    <div class="container" id="statusContainer" style="display: none;">
+        <h2>{% trans "Status" %}</h2>
+        <table id="statusTable">
+            <thead>
+                <tr>
+                    <th>{% trans "Matches" %}</th>
+                    <th>{% trans "Wins" %}</th>
+                    <th>{% trans "Losses" %}</th>
+                    <th>{% trans "Winrate" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Status data will be populated here -->
+            </tbody>
+        </table>
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+    
+<!-- Nickname Container for 4 players -->
+<div class="container" id="fourPlayerNicknameContainer" style="display: none;">
+    <h2>Enter Player Nicknames</h2>
+    <input type="text" id="player1Nickname4" placeholder="Player 1 Nickname">
+    <input type="hidden" id="player1Username4" value=""> <!-- Hidden input for Player 1 Username -->
+    <input type="text" id="player2Nickname4" placeholder="Player 2 Nickname">
+    <input type="text" id="player3Nickname4" placeholder="Player 3 Nickname">
+    <input type="text" id="player4Nickname4" placeholder="Player 4 Nickname">
+    <button onclick="startVsPlayerGame('2v2')">Start 4 Player Game</button>
+    <button onclick="returnToMenu()">Return to Menu</button>
+</div>
+
+
+     <!-- Settings Container -->
+     <div class="container" id="settingsContainer" style="display: none;">
+        <h2>{% trans "Settings" %}</h2>
+        <form id="settingsForm">
+            <div>
+                <label for="enableObstacles">{% trans "Enable Obstacles:" %}</label>
+                <input type="checkbox" id="enableObstacles">
+            </div>
+            <div>
+                <label for="enableMultipleBalls">{% trans "Enable Multiple Balls:" %}</label>
+                <input type="checkbox" id="enableMultipleBalls">
+            </div>
+            <div>
+                <label for="numberOfBalls">{% trans "Number of Balls:" %}</label>
+                <input type="number" id="numberOfBalls" min="1" max="10" value="1">
+            </div>
+            <div>
+                <label for="ballSpeed">{% trans "Ball Speed:" %}</label>
+                <input type="number" id="ballSpeed" min="1" max="20" value="10">
+            </div>
+            <div>
+                <label for="paddleSpeed">{% trans "Paddle Speed:" %}</label>
+                <input type="number" id="paddleSpeed" min="1" max="20" value="12">
+            </div>
+            <button type="button" id="confirmButton">{% trans "Confirm" %}</button>
+            <button type="button" id="resetButton">{% trans "Reset to Default" %}</button>
+        </form>
+        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    </div>
+
+    <div id="statisticsContainer" class="statistics-container" style="display: none;"></div>
+
+    <!-- Load JavaScript files at the end of the body -->
+    <script src="{% static 'js/login.js' %}" defer></script>
+    <script src="{% static 'js/vsplayer.js' %}" defer></script>
+    <script src="{% static 'js/tournament.js' %}" defer></script>
+    <script src="{% static 'js/friendlist.js' %}" defer></script>
+    <script src="{% static 'js/profile.js' %}" defer></script>
+    <script src="{% static 'js/navigation.js' %}" defer></script>
+    <script src="{% static 'js/settings.js' %}" defer></script>
+    <script src="{% static 'js/statistics.js' %}" defer></script>
+    <script src="{% static 'js/common.js' %}" defer></script>
+    <script src="{% static 'js/signin.js' %}" defer></script>
+    <script src="{% static 'js/menu.js' %}" defer></script>
+</body>
+</html>
