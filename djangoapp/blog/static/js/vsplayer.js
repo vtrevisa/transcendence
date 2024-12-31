@@ -27,10 +27,11 @@ let player2Nickname = "Player 2";
 let player3Nickname = "Player 3";
 let player4Nickname = "Player 4";
 let gameStarted = false;
-let gameEnded = false;
+let gameEnded = true;
 let balls = [];
 let player1, player2, player3, player4;
 let mode = '1v1'; // Global variable to store the game mode
+let side = -1;
 
 const defaultPaddleSpeed = 12;
 let player1Y = canvas.height / 2 - 30;
@@ -97,23 +98,13 @@ async function startVsPlayerGame(selectedMode) {
     draw();
 
     gameStarted = false;
+    gameEnded = false;
 }
 
 function resetGame() {
     team1Score = 0;
     team2Score = 0;
     resetBall();
-
-    if (mode === '2v2') {
-        player1Y = canvas.height / 2 - player1.height / 2;
-        player2Y = canvas.height / 2 - player2.height / 2;
-        player3Y = canvas.height / 2 - player3.height / 2;
-        player4Y = canvas.height / 2 - player4.height / 2;
-    } else {
-        player1Y = canvas.height / 2 - player1.height / 2;
-        player2Y = canvas.height / 2 - player2.height / 2;
-    }
-
     draw();
     updateScore();
     gameStarted = false; // Ensure gameStarted is set to false
@@ -170,11 +161,11 @@ function startGame() {
         player2.speed = gameSettings.paddleSpeed;
         player3.speed = gameSettings.paddleSpeed;
         player4.speed = gameSettings.paddleSpeed;
+        
     } else {
         player1.speed = gameSettings.paddleSpeed;
         player2.speed = gameSettings.paddleSpeed;
     }
-
     gameStarted = true;
     requestAnimationFrame(gameLoop);
 }
@@ -214,10 +205,12 @@ function resetBall() {
 
         // Set random direction for ball velocity
         const speed = gameSettings.ballSpeed; // Use the ball speed from settings
-        let angle = (Math.random() - 0.5) * (Math.PI / 2); // Random angle in radians
-
-        ball.vx = speed * Math.cos(angle);
+        let angle = ((Math.random() - 0.5) * (Math.PI / 2)); // Random angle in radians
+        
+        ball.vx = speed * Math.cos(angle) * side;
         ball.vy = speed * Math.sin(angle);
+        side *= -1; // Alternate between left and right sides
+
 
         balls.push(ball);
 

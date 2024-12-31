@@ -110,6 +110,7 @@ async function logout() {
             }
         });
         if (response.ok) {
+            window.isOnline = false;
             window.location.reload();
         } else {
             alert('Logout failed');

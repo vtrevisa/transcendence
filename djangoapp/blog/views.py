@@ -340,38 +340,33 @@ def update_status_counter(request):
 @csrf_exempt
 def record_game_history(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            player1_username = data.get('player1')['username']
-            player2_nickname = data.get('player2')['nickname']
-            winner = data.get('winner')
-            match_time = data.get('date')
-            match_score = data.get('details')
-            match_id = data.get('id')  # Retrieve match ID
-            events = data.get('events', [])  # Retrieve events
+        data = json.loads(request.body)
+        print('>>>>', data.get('player1'))
+        player1_username = data.get('player1')['username']
+        player2_nickname = data.get('player2')['nickname']
+        winner = data.get('winner')
+        match_time = data.get('date')
+        match_score = data.get('details')
+        match_id = data.get('id')  # Retrieve match ID
+        events = data.get('events', [])  # Retrieve events
 
-            player1 = User.objects.get(username=player1_username)
+        player1 = User.objects.get(username=player1_username)
 
-            winner_user = player1 if winner == player1_username else player2_nickname
+        winner_user = player1 if winner == player1_username else player2_nickname
 
-            if winner_user is None:
-                return JsonResponse({'message': 'Winner user is None'}, status=400)
+        if winner_user is None:
+            return JsonResponse({'message': 'Winner user is None'})
 
-            Match.objects.create(
-                id=match_id,  # Store match ID
-                player1=player1,
-                player2=player2_nickname,
-                winner=winner_user,
-                date=match_time,
-                details=match_score,
-                events=events  # Store events
-            )
-
-            return JsonResponse({'message': 'Game history recorded successfully'})
-        except User.DoesNotExist:
-            return JsonResponse({'message': 'User not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'message': str(e)}, status=400)
+        Match.objects.create(
+            id=match_id,  # Store match ID
+            player1=player1,
+            player2=player2_nickname,
+            winner=winner_user,
+            date=match_time,
+            details=match_score,
+            events=events  # Store events
+        )
+        return JsonResponse({'message': 'Game history recorded successfully'})
     else:
         return JsonResponse({'message': 'Invalid request method'}, status=400)
 

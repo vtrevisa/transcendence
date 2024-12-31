@@ -118,6 +118,7 @@ function nextMatch() {
     if (currentMatchIndex < matches.length) {
         displayMatch(currentMatchIndex);
     } else {
+        alert(`The ${tournamentStage} stage has ended.`);
         if (tournamentStage === 'quarterfinals') {
             // Proceed to semifinals
             tournamentStage = 'semifinals';

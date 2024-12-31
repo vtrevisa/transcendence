@@ -26,9 +26,10 @@ function displayMatchHistory() {
                 const dateCell = row.insertCell(3);
                 const detailsCell = row.insertCell(4);
                 const statsCell = row.insertCell(5);
-
+                
+                console.log (match);
                 player1Cell.textContent = match.player1.username;
-                player2Cell.textContent = match.player2.nickname;
+                player2Cell.textContent = match.player2.username;
                 winnerCell.textContent = match.winner;
                 dateCell.textContent = match.date;
                 detailsCell.textContent = match.details;
