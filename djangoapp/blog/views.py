@@ -84,13 +84,13 @@ def login_view(request):
             try:
                 # Send OTP via email
                 print(user.email)
-                # send_mail(
-                #    'Your OTP Code',
-                #    f'Your OTP code is {otp}',
-                #    'vi.trevi.11@gmail.com',
-                #    [user.email],
-                #    fail_silently=False,
-                #)
+                send_mail(
+                   'Your OTP Code',
+                   f'Your OTP code is {otp}',
+                   'vi.trevi.11@gmail.com',
+                   [user.email],
+                   fail_silently=False,
+                )
                 print(otp)
                 return JsonResponse({'message': 'Your OTP code is {otp}'}, status=200)
             except BadHeaderError:
