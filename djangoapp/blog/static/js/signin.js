@@ -3,6 +3,15 @@ async function handleSignIn(event) {
     event.preventDefault();
     const formData = new FormData(document.getElementById('signInForm'));
     const csrfToken = getCookie('csrftoken');
+    const nickname = formData.get('nickname');
+    const nicknamePattern = /[a-zA-Z0-9]/;
+
+    // Validate nickname
+    if (!nickname || !nicknamePattern.test(nickname)) {
+        alert('Please input a valid nickname with at least one letter or number.');
+        return;
+    }
+    
     try {
         const response = await fetch('/sign_in/', {
             method: 'POST',

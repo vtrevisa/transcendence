@@ -17,31 +17,34 @@ function loadPage(route, params) {
             playAsGuest(params);
             break;
         case 'versusplayer':
-            selectMode(params);
+            showVsGame(params);
             break;
         case 'tournament':
             showTournament(params);
             break;
         case 'fourplayers':
-            fourPlayers(params);
+            showFourPlayers(params);
             break;
         case 'settings':
             showSettings(params);
             break;
         case 'profile':
-            showProfile(params);
+            showUpdateProfile(params);
             break;
         case 'friendlist':
-            friendList(params);
+            showFriendList(params);
             break;
         case 'showStatus':
-            win_rate(params);
+            showStatus(params);
             break;
         case 'matchHistory':
             showMatchHistory(params);
             break;
         case 'statistics':
             showStatistics(params);
+            break;
+        case 'home':
+            showHome(params);
             break;
         default:
             showHome(params);
@@ -57,18 +60,17 @@ window.addEventListener('popstate', function(event) {
 
 // Example functions to show different pages
 function showHome(params) {
-    hideAllContainers();
     returnToMenu();
-}
-
-function showSignIn(params) {
-    hideAllContainers();
-    document.getElementById('signInContainer').style.display = 'block';
 }
 
 function showLogin(params) {
     hideAllContainers();
     document.getElementById('loginContainer').style.display = 'block';
+}
+
+function showSignIn(params) {
+    hideAllContainers();
+    document.getElementById('signInContainer').style.display = 'block';
 }
 
 function playAsGuest() {
@@ -115,10 +117,11 @@ async function showStatus() {
 
 function showMatchHistory(params) {
     hideAllContainers();
-    document.getElementById('matchHistoryContainer').style.display = 'block';
+    displayMatchHistory();
 }
 
 function showStatistics(params) {
     hideAllContainers();
     document.getElementById('statisticsContainer').style.display = 'block';
+    displayLast10Matches();
 }

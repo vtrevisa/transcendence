@@ -1,35 +1,34 @@
 // profile.js
 
 // Define containers variable at the top
-let containers;
+
+const profileUsername = document.getElementById('profileUsername');
+const profileEmail = document.getElementById('profileEmail');
+const profileNickname = document.getElementById('profileNickname');
+const profileAvatar = document.getElementById('profileAvatar');
+
+const profileContainer = document.getElementById('profileContainer');
+
+const gameModeContainer = document.getElementById('gameModeContainer');
+const logoutButton = document.getElementById('logoutButton');
+const editProfileButton = document.getElementById('editProfileButton');
+const friendListButton = document.getElementById('friendListButton');
+const historyButton = document.getElementById('historyButton');
+const player1NicknameInput = document.getElementById('player1Nickname');
+const tournamentPlayer1Input = document.getElementById('player1');
+const fourPlayer1NicknameInput = document.getElementById('player1Nickname4');
 
 function displayProfile(profile) {
-    const profileUsername = document.getElementById('profileUsername');
-    const profileEmail = document.getElementById('profileEmail');
-    const profileNickname = document.getElementById('profileNickname');
-    const profileAvatar = document.getElementById('profileAvatar');
-    const profileContainer = document.getElementById('profileContainer');
-    const logoutButton = document.getElementById('logoutButton');
-    const vsGameButton = document.getElementById('vsGameButton');
-    const tournamentButton = document.getElementById('tournamentButton');
-    const editProfileButton = document.getElementById('editProfileButton');
-    const friendListButton = document.getElementById('friendListButton');
-    const historyButton = document.getElementById('historyButton');
-    const player1NicknameInput = document.getElementById('player1Nickname');
-    const tournamentPlayer1Input = document.getElementById('player1');
-    const fourPlayer1NicknameInput = document.getElementById('player1Nickname4');
-    
-    if (profileUsername) profileUsername.textContent = profile.username;
-    if (profileEmail) profileEmail.textContent = profile.email;
-    if (profileNickname) profileNickname.textContent = profile.nickname;
-    if (profileAvatar) profileAvatar.src = profile.avatar_url;
+    const nicknamePattern = /[a-zA-Z0-9]/;
+    if (!profile.nickname || !nicknamePattern.test(profile.nickname)) {
+        alert('Please input a valid nickname with at least one letter or number.');
+        hideAllContainers();
+        navigateTo('profile');
+    }
+    showProfileInfo(profile);
     if (profileContainer) profileContainer.style.display = 'flex';
+    if (gameModeContainer) gameModeContainer.style.display = 'flex';
     if (logoutButton) logoutButton.style.display = 'block';
-    if (vsGameButton) vsGameButton.style.display = 'block';
-    if (tournamentButton) tournamentButton.style.display = 'block';
-    if (editProfileButton) editProfileButton.style.display = 'block';
-    if (friendListButton) friendListButton.style.display = 'block';
-    if (historyButton) historyButton.style.display = 'block';
     if (player1NicknameInput) {
         player1NicknameInput.value = profile.nickname;
         player1NicknameInput.readOnly = true;  // Make the field read-only
@@ -42,6 +41,13 @@ function displayProfile(profile) {
         fourPlayer1NicknameInput.value = profile.nickname;
         fourPlayer1NicknameInput.readOnly = true;  // Make the field read-only
     }
+}
+
+function showProfileInfo(profile) {
+    if (profileUsername) profileUsername.textContent = profile.username;
+    if (profileEmail) profileEmail.textContent = profile.email;
+    if (profileNickname) profileNickname.textContent = profile.nickname;
+    if (profileAvatar) profileAvatar.src = profile.avatar_url;
 }
 
 // Function to handle profile update form submission
@@ -97,3 +103,4 @@ document.addEventListener('DOMContentLoaded', async function() {
         updateProfileForm.addEventListener('submit', handleProfileUpdate);
     }
 });
+

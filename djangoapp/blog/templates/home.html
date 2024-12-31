@@ -39,11 +39,11 @@
                 <p><strong>{% trans "Username:" %}</strong> <span id="profileUsername"></span></p>
                 <p><strong>{% trans "Email:" %}</strong> <span id="profileEmail"></span></p>
                 <p><strong>{% trans "Nickname:" %}</strong> <span id="profileNickname"></span></p>
-                <button id="editProfileButton" class="edit-profile-button" onclick="showUpdateProfile()">{% trans "Edit Profile" %}</button>
-                <button id="friendListButton" class="friend-list-button" onclick="showFriendList()">{% trans "Friend List" %}</button>
-                <button id="statusButton" class="status-button" onclick="showStatus()">{% trans "Status" %}</button>
-                <button id="matchHistoryButton" class="match-history-button" onclick="showMatchHistory()">{% trans "Match History" %}</button>
-                <button id="statisticsButton" class="statistics-button" onclick="displayLast10Matches()">{% trans "Statistics" %}</button>
+                <button id="editProfileButton" class="edit-profile-button" onclick="navigateTo('profile')">{% trans "Edit Profile" %}</button>
+                <button id="friendListButton" class="friend-list-button" onclick="navigateTo('friendlist')">{% trans "Friend List" %}</button>
+                <button id="statusButton" class="status-button" onclick="navigateTo('showStatus')">{% trans "Status" %}</button>
+                <button id="matchHistoryButton" class="match-history-button" onclick="navigateTo('matchHistory')">{% trans "Match History" %}</button>
+                <button id="statisticsButton" class="statistics-button" onclick="navigateTo('statistics')">{% trans "Statistics" %}</button>
             </div>
         </div>
         <button id="logoutButton" class="logout-button" style="display: none;" onclick="logout()">{% trans "Logout" %}</button>
@@ -60,9 +60,9 @@
     <!-- Main Menu Container -->
     <div class="container menu-container" id="menuContainer">
         <h1>{% trans "Pongon-line" %}</h1>
-        <button id="loginButton" onclick="showLogin()">{% trans "Login" %}</button>
-        <button id="signInButton" onclick="showSignIn()">{% trans "Sign In" %}</button>
-        <button id="playAsGuestButton" onclick="playAsGuest()">{% trans "Play as Guest" %}</button>
+        <button id="loginButton" onclick="navigateTo('login')">{% trans "Login" %}</button>
+        <button id="signInButton" onclick="navigateTo('sign_in')">{% trans "Sign In" %}</button>
+        <button id="playAsGuestButton" onclick="navigateTo('playasguest')">{% trans "Play as Guest" %}</button>
     </div>
 
     <!-- Game Mode Container -->
@@ -71,8 +71,8 @@
         <button id="tournamentButton" onclick="selectMode('tournament')">{% trans "Tournament" %}</button>
         <!-- Novo botão para 4 jogadores -->
         <button id="fourPlayerButton" onclick="selectMode('fourPlayer')">{% trans "4 Player Game" %}</button>
-        <button onclick="showSettings()">{% trans "Settings" %}</button> <!-- Button to show settings -->
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('settings')">{% trans "Settings" %}</button> <!-- Button to show settings -->
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
 
     <!-- Login Form Container -->
@@ -86,7 +86,7 @@
             </div>
             <button type="submit">{% trans "Login" %}</button>
         </form>
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
 
     <!-- OTP Form Container -->
@@ -99,7 +99,7 @@
             </div>
             <button type="submit">{% trans "Verify OTP" %}</button>
         </form>
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
 
     <!-- Sign-In Form Container -->
@@ -116,7 +116,7 @@
             </div>
             <button type="submit">{% trans "Sign In" %}</button>
         </form>
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
 
     <!-- Profile Update Form Container -->
@@ -131,7 +131,7 @@
             </div>
             <button type="submit">{% trans "Update Profile" %}</button>
         </form>
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
 
     <!-- Friend List Container -->
@@ -150,7 +150,7 @@
             </tbody>
         </table>
         <button onclick="showAddFriendForm()">{% trans "Add Friend" %}</button>
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
 
     <!-- Add Friend Form Container -->
@@ -173,7 +173,7 @@
         <canvas id="gameCanvas" width="600" height="400"></canvas>
         <div class="button-container">
             <button onclick="resetGame()">{% trans "Reset Game" %}</button>
-            <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+            <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
         </div>
     </div>
 
@@ -184,7 +184,7 @@
         <input type="hidden" id="player1Username" value=""> <!-- Hidden input for Player 1 Username -->
         <input type="text" id="player2Nickname" placeholder="Player 2 Nickname">
         <button onclick="startVsPlayerGame()">Start Game</button>
-        <button onclick="returnToMenu()">Return to Menu</button>
+        <button onclick="navigateTo('home')">Return to Menu</button>
     </div>
 
     <!-- Tournament Button Container -->
@@ -205,7 +205,7 @@
         <input type="text" id="player7" placeholder="{% trans 'Player 7 Nickname' %}">
         <input type="text" id="player8" placeholder="{% trans 'Player 8 Nickname' %}">
         <button onclick="startTournament()">{% trans "Start Tournament" %}</button>
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
 
     <!-- Tournament Bracket Container -->
@@ -240,7 +240,7 @@
         <span id="pageInfo"></span>
         <button id="nextPageButton" onclick="nextPage()">{% trans "Next" %}</button>
     </div>
-    <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+    <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
 </div>
 
 <!-- Match Statistics Container -->
@@ -269,7 +269,7 @@
                 <!-- Status data will be populated here -->
             </tbody>
         </table>
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
     
 <!-- Nickname Container for 4 players -->
@@ -281,7 +281,7 @@
     <input type="text" id="player3Nickname4" placeholder="Player 3 Nickname">
     <input type="text" id="player4Nickname4" placeholder="Player 4 Nickname">
     <button onclick="startVsPlayerGame('2v2')">Start 4 Player Game</button>
-    <button onclick="returnToMenu()">Return to Menu</button>
+    <button onclick="navigateTo('home')">Return to Menu</button>
 </div>
 
 
@@ -312,22 +312,25 @@
             <button type="button" id="confirmButton">{% trans "Confirm" %}</button>
             <button type="button" id="resetButton">{% trans "Reset to Default" %}</button>
         </form>
-        <button onclick="returnToMenu()">{% trans "Return to Menu" %}</button>
+        <button onclick="navigateTo('home')">{% trans "Return to Menu" %}</button>
     </div>
 
     <div id="statisticsContainer" class="statistics-container" style="display: none;"></div>
 
     <!-- Load JavaScript files at the end of the body -->
-    <script src="{% static 'js/login.js' %}" defer></script>
-    <script src="{% static 'js/vsplayer.js' %}" defer></script>
-    <script src="{% static 'js/tournament.js' %}" defer></script>
-    <script src="{% static 'js/friendlist.js' %}" defer></script>
-    <script src="{% static 'js/profile.js' %}" defer></script>
-    <script src="{% static 'js/navigation.js' %}" defer></script>
-    <script src="{% static 'js/settings.js' %}" defer></script>
-    <script src="{% static 'js/statistics.js' %}" defer></script>
     <script src="{% static 'js/common.js' %}" defer></script>
-    <script src="{% static 'js/signin.js' %}" defer></script>
+    <script src="{% static 'js/friendlist.js' %}" defer></script>
+    <script src="{% static 'js/history.js' %}" defer></script>
+    <script src="{% static 'js/login.js' %}" defer></script>
     <script src="{% static 'js/menu.js' %}" defer></script>
+    <script src="{% static 'js/navigation.js' %}" defer></script>
+    <script src="{% static 'js/profile.js' %}" defer></script>
+    <script src="{% static 'js/settings.js' %}" defer></script>
+    <script src="{% static 'js/signin.js' %}" defer></script>
+    <script src="{% static 'js/statistics.js' %}" defer></script>
+    <script src="{% static 'js/status.js' %}" defer></script>
+    <script src="{% static 'js/tournament.js' %}" defer></script>
+    <script src="{% static 'js/vsplayer.js' %}" defer></script>
+
 </body>
 </html>

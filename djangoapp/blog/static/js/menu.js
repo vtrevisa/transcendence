@@ -1,16 +1,13 @@
 // menu.js
-
+window.data = {};
 // Function to return to the main menu
 async function returnToMenu() {
     hideAllContainers();
-    try {
-        if (window.isOnline) {
-            document.getElementById('profileContainer').style.display = 'flex';
-        } else {
-            document.getElementById('menuContainer').style.display = 'block';
-        }
-    } catch (error) {
-        console.error('Error checking login status:', error);
+    if (window.isOnline) {
+        displayProfile (window.data);
+    } else {
+        hideAllContainers();
+        document.getElementById('menuContainer').style.display = 'block';
     }
 }
 
@@ -18,23 +15,15 @@ async function returnToMenu() {
 function selectMode(mode) {
     hideAllContainers();
     if (mode === 'vsPlayer') {
-        showVsGame();
+        navigateTo('versusplayer');
     } else if (mode === 'tournament') {
-        showTournament();
+        navigateTo('tournament');
     } else if (mode === 'fourPlayer') {
-        showFourPlayers();
+        navigateTo('fourplayers');
     }
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    const data = await checkLoginStatus();
-    if (window.isOnline) {
-        hideAllContainers();
-        displayProfile(data);
-        document.getElementById('gameModeContainer').style.display = 'flex';
-        document.getElementById('profileContainer').style.display = 'flex';
-        document.getElementById('logoutButton').style.display = 'block';
-        } else {
+   window.data = await checkLoginStatus();
         returnToMenu();
-    }
 });

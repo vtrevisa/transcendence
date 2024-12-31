@@ -2,7 +2,8 @@ let currentPage = 1;
 const itemsPerPage = 10;
 let fetchedMatchData = []; // Store fetched match data
 
-function showMatchHistory() {
+function displayMatchHistory() {
+    document.getElementById('matchHistoryContainer').style.display = 'block';
     fetch('/match_history/')
         .then(response => response.json())
         .then(data => {
@@ -88,10 +89,4 @@ async function recordGameHistory(matchData) {
     if (response.ok) {
         const data = await response.json();
     } else {    }
-}
-
-// Event listener for the match history button
-const matchHistoryButton = document.getElementById('historyButton');
-if (matchHistoryButton) {
-    matchHistoryButton.addEventListener('click', showMatchHistory);
 }
