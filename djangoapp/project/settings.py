@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_email',# ------------------- #
 	'blog',                        # MyApp
 	'oauth2_provider',             # Django OAuth Toolkit
+	"sslserver",                    # SSL Server for HTTPS
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -194,6 +195,15 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'change-me')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'change-me')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'change-me')
 SERVER_EMAIL = os.getenv('SERVER_EMAIL', 'change-me')
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 LOGGING = {
     'version': 1,

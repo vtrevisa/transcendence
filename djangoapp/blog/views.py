@@ -155,7 +155,7 @@ def check_login_view(request):
             'logged_in': True,
             'username': user.username,
             'email': user.email,
-            'nickname': user_profile.nickname,
+            'nickname': user_profile.nickname if user_profile.nickname else user.username,
             'avatar_url': user_profile.avatar.url if user_profile.avatar else '/static/default_avatar.png'
         })
     except UserProfile.DoesNotExist:
@@ -437,7 +437,7 @@ def callback_view(request):
                 user.save()
         except User.DoesNotExist:
             password = "randompasswd"
-            user = User(username=user_info['login'], email=user_info['email'])
+            user = User(username=user_info['login'], email=user_info['email']) 
             user.set_password(password)
             user.last_login = timezone.now()  # Set the last_login field
             user.save()

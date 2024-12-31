@@ -19,12 +19,7 @@ const tournamentPlayer1Input = document.getElementById('player1');
 const fourPlayer1NicknameInput = document.getElementById('player1Nickname4');
 
 function displayProfile(profile) {
-    const nicknamePattern = /[a-zA-Z0-9]/;
-    if (!profile.nickname || !nicknamePattern.test(profile.nickname)) {
-        alert('Please input a valid nickname with at least one letter or number.');
-        hideAllContainers();
-        navigateTo('profile');
-    }
+    console.log('profile: ', profile);
     showProfileInfo(profile);
     if (profileContainer) profileContainer.style.display = 'flex';
     if (gameModeContainer) gameModeContainer.style.display = 'flex';

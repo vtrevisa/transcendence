@@ -13,9 +13,6 @@ function loadPage(route, params) {
         case 'sign_in':
             showSignIn(params);
             break;
-        case 'playasguest':
-            playAsGuest(params);
-            break;
         case 'versusplayer':
             showVsGame(params);
             break;
@@ -71,11 +68,6 @@ function showLogin(params) {
 function showSignIn(params) {
     hideAllContainers();
     document.getElementById('signInContainer').style.display = 'block';
-}
-
-function playAsGuest() {
-    hideAllContainers();
-    document.getElementById('gameModeContainer').style.display = 'block';
 }
 
 function showVsGame(params) {

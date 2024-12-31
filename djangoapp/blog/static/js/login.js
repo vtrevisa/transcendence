@@ -54,8 +54,8 @@ async function handleLogin(event) {
             console.log('Network response was not ok');
         }
         const data = await response.json();
-        if (data.message) {
-            console.log('data.message: ', data.message);
+        if (data.success != false) {
+            console.log('data.success: ', data.message);
             alert(data.message);
             // Show OTP input form
             document.getElementById('otpContainer').style.display = 'block';
