@@ -34,10 +34,10 @@ let mode = '1v1'; // Global variable to store the game mode
 let side = -1;
 
 const defaultPaddleSpeed = 12;
-let player1Y = canvas.height / 2 - 30;
-let player2Y = canvas.height / 2 - 30;
-let player3Y = canvas.height / 4 - 30;
-let player4Y = canvas.height / 4 - 30;
+let player1Y = canvas.height / 4 - 30;
+let player2Y = canvas.height / 4 - 30;
+let player3Y = (3 * canvas.height) / 4 - 30;
+let player4Y = (3 * canvas.height) / 4 - 30;
 const maxScore = 5;
 
 // Load all necessary containers
@@ -59,6 +59,7 @@ let gameSettings = {
 };
 
 async function startVsPlayerGame(selectedMode) {
+    console.log('startVsPlayerGame');
     mode = selectedMode; // Set the global mode variable
     window.isTournamentMode = (mode === 'tournament');
 
@@ -102,6 +103,7 @@ async function startVsPlayerGame(selectedMode) {
 }
 
 function resetGame() {
+    console.log('resetGame');
     team1Score = 0;
     team2Score = 0;
     resetBall();
@@ -151,6 +153,7 @@ function resetGameData() {
 
 // Function to start the game with the current settings
 function startGame() {
+    console.log('startGame');
     if (window.gameSettings) {
         gameSettings = window.gameSettings;
     }
@@ -194,6 +197,7 @@ function updateGame() {
 }
 
 function resetBall() {
+    console.log('resetBall');
     balls = []; // Array to hold multiple balls
 
     for (let i = 0; i < (gameSettings.enableMultipleBalls ? gameSettings.numberOfBalls : 1); i++) {
@@ -234,6 +238,7 @@ function resetBall() {
 }
 
 function moveBall() {
+    console.log('moveBall');
     balls.forEach(ball => {
         ball.x += ball.vx;
         ball.y += ball.vy;
@@ -342,6 +347,7 @@ function updateScore() {
 }
 
 function draw() {
+    console.log('draw');
     // Clear the canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
 
